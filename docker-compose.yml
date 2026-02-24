@@ -47,7 +47,8 @@ services:
     build: .
     restart: unless-stopped
     ports:
-      - "22003:22003"
+      - "22003:22003/tcp"
+      - "22003:22003/udp"
       - "22005:22005"
       - "22126:22126/udp"
     environment:
@@ -72,6 +73,7 @@ services:
       FORUMS_API_KEY: ${FORUMS_API_KEY:-}
       IMGUR_API_KEY: ${IMGUR_API_KEY:-}
     volumes:
+      - ./mods/deathmatch:/home/mtasa/server/mods/deathmatch
       - mta_logs:/home/mtasa/server/mods/deathmatch/resources/logs/logs
 
 volumes:
