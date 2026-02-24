@@ -1,0 +1,26 @@
+name: Feature request
+description: Zaproponuj nową funkcję lub ulepszenie
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: Opisz co chcesz dodać i dlaczego to ma sens w tym projekcie.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Jaki problem rozwiązuje ta funkcja?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proponowane rozwiązanie
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatywy które rozważałeś
