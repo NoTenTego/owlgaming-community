@@ -6,7 +6,7 @@ set -e
 cd /home/mtasa/server/
 
 # SET THE mtaserver.conf FROM mtaserver.conf.bak
-cat ./mods/deathmatch/mtaserver.conf.bak \
+cat ./mods/deathmatch/mtaserver.conf.example \
     | sed "s/SERVER_IP/${SERVER_IP}/" \
     | sed "s/SHOULD_BROADCAST/${SHOULD_BROADCAST}/" \
     | sed "s/mta_mysql.dll/mta_mysql.so/" \
@@ -15,7 +15,7 @@ cat ./mods/deathmatch/mtaserver.conf.bak \
     > ./mods/deathmatch/mtaserver.conf
 
 # SET THE settings.xml FROM settings.xml.bak
-cat ./mods/deathmatch/settings.xml.bak \
+cat ./mods/deathmatch/settings.xml.example \
     | sed "s/PRODUCTION_SERVER/${PRODUCTION_SERVER}/" \
 	| sed "s/MTA_DATABASE_NAME/${MTA_DATABASE_NAME}/" \
 	| sed "s/MTA_DATABASE_USERNAME/${MTA_DATABASE_USERNAME}/" \

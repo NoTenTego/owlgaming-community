@@ -1,0 +1,78 @@
+# =============================================================
+#  OwlGaming Community
+#
+#  Z bazą w Dockerze:
+#    docker compose --profile with-db up -d
+#
+#  Z własną bazą (VPS, hosting):
+#    docker compose up -d
+#
+#  Uzupełnij .env przed uruchomieniem.
+# =============================================================
+
+services:
+
+  # -----------------------------------------------------------
+  # MySQL – uruchamia się tylko z profilem "with-db"
+  # -----------------------------------------------------------
+  db:
+    profiles: [with-db]
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MTA_DATABASE_NAME: ${MTA_DATABASE_NAME:-mta}
+      MTA_DATABASE_USERNAME: ${MTA_DATABASE_USERNAME:-mta_user}
+      MTA_DATABASE_PASSWORD: ${MTA_DATABASE_PASSWORD}
+      CORE_DATABASE_NAME: ${CORE_DATABASE_NAME:-core}
+      CORE_DATABASE_USERNAME: ${CORE_DATABASE_USERNAME:-core_user}
+      CORE_DATABASE_PASSWORD: ${CORE_DATABASE_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
+      - ./mods/deathmatch/data:/mta-sql:ro
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # -----------------------------------------------------------
+  # Serwer MTA
+  # -----------------------------------------------------------
+  mta:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "22003:22003"
+      - "22005:22005"
+      - "22126:22126/udp"
+    environment:
+      SERVER_IP: ${SERVER_IP:-}
+      SHOULD_BROADCAST: ${SHOULD_BROADCAST:-0}
+      OWNER_EMAIL_ADDRESS: ${OWNER_EMAIL_ADDRESS:-admin@localhost}
+      PRODUCTION_SERVER: ${PRODUCTION_SERVER:-0}
+      WEBSITE_PASSWORD: ${WEBSITE_PASSWORD}
+
+      MTA_DATABASE_HOST: ${MTA_DATABASE_HOST:-db}
+      MTA_DATABASE_PORT: ${MTA_DATABASE_PORT:-3306}
+      MTA_DATABASE_NAME: ${MTA_DATABASE_NAME:-mta}
+      MTA_DATABASE_USERNAME: ${MTA_DATABASE_USERNAME:-mta_user}
+      MTA_DATABASE_PASSWORD: ${MTA_DATABASE_PASSWORD}
+
+      CORE_DATABASE_HOST: ${CORE_DATABASE_HOST:-db}
+      CORE_DATABASE_PORT: ${CORE_DATABASE_PORT:-3306}
+      CORE_DATABASE_NAME: ${CORE_DATABASE_NAME:-core}
+      CORE_DATABASE_USERNAME: ${CORE_DATABASE_USERNAME:-core_user}
+      CORE_DATABASE_PASSWORD: ${CORE_DATABASE_PASSWORD}
+
+      FORUMS_API_KEY: ${FORUMS_API_KEY:-}
+      IMGUR_API_KEY: ${IMGUR_API_KEY:-}
+    volumes:
+      - mta_logs:/home/mtasa/server/mods/deathmatch/resources/logs/logs
+
+volumes:
+  db_data:
+  mta_logs:
