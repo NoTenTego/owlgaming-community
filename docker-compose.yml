@@ -29,10 +29,11 @@ services:
       CORE_DATABASE_PASSWORD: ${CORE_DATABASE_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/mta.cnf:ro
       - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
       - ./mods/deathmatch/data:/mta-sql:ro
     ports:
-      - "3306:3306"
+      - "3307:3306"
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 10s

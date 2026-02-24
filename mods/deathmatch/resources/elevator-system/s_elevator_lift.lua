@@ -6,7 +6,7 @@
 -- License: BSD
 
 mysql = exports.mysql
-null = mysql_null()
+null = exports["mysql"]:mysql_null()
 
 local toLoad = { }
 local threads = { }

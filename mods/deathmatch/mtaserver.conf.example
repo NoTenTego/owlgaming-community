@@ -4,7 +4,7 @@
     ################################ -->
     <http_dos_exclude>SERVER_IP</http_dos_exclude>
     <ase>SHOULD_BROADCAST</ase>
-    <module src="mta_mysql.dll" />  <!-- # mta_mysql.so on linux -->
+    <!-- mta_mysql module removed - deprecated since MTA 1.3, use dbConnect instead -->
     <module src="bcrypt.dll" /> <!-- # bcrypt.so on linux -->
     <owner_email_address>OWNER_EMAIL_ADDRESS</owner_email_address>
 

@@ -2,7 +2,7 @@
 	<setting name="@mysql.production_server" value="PRODUCTION_SERVER" /> <!-- 1 = Live server 0 = Local/Dev server -->
 
 	<!-- MySQL -->
-	<setting name="@mysql.socket" value="unix_socket=/var/run/mysqld/mysqld.sock" />
+	<setting name="@mysql.socket" value="MYSQL_SOCKET" /> <!-- Leave empty for TCP (Docker). For local socket: unix_socket=/var/run/mysqld/mysqld.sock -->
 	<!-- MTA DB -->
 	<setting name="@mysql.database" value="MTA_DATABASE_NAME" />
 	<setting name="@mysql.username" value="MTA_DATABASE_USERNAME" />

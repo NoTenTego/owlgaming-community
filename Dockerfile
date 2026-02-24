@@ -1,9 +1,10 @@
-FROM debian:stable-slim
+FROM debian:bullseye-slim
 
 # Dependencies
 RUN apt-get update && apt-get install -y \
 	unzip \
 	wget \
+	netcat \
 	default-libmysqlclient-dev \
 	libncurses5-dev \
 	libncursesw5-dev \

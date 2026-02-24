@@ -9,7 +9,6 @@ cd /home/mtasa/server/
 cat ./mods/deathmatch/mtaserver.conf.example \
     | sed "s/SERVER_IP/${SERVER_IP}/" \
     | sed "s/SHOULD_BROADCAST/${SHOULD_BROADCAST}/" \
-    | sed "s/mta_mysql.dll/mta_mysql.so/" \
     | sed "s/bcrypt.dll/bcrypt.so/" \
     | sed "s/OWNER_EMAIL_ADDRESS/${OWNER_EMAIL_ADDRESS}/" \
     > ./mods/deathmatch/mtaserver.conf
@@ -17,6 +16,7 @@ cat ./mods/deathmatch/mtaserver.conf.example \
 # SET THE settings.xml FROM settings.xml.bak
 cat ./mods/deathmatch/settings.xml.example \
     | sed "s/PRODUCTION_SERVER/${PRODUCTION_SERVER}/" \
+	| sed "s|MYSQL_SOCKET|${MYSQL_SOCKET:-}|" \
 	| sed "s/MTA_DATABASE_NAME/${MTA_DATABASE_NAME}/" \
 	| sed "s/MTA_DATABASE_USERNAME/${MTA_DATABASE_USERNAME}/" \
 	| sed "s/MTA_DATABASE_PASSWORD/${MTA_DATABASE_PASSWORD}/" \
@@ -31,6 +31,15 @@ cat ./mods/deathmatch/settings.xml.example \
 	| sed "s/IMGUR_API_KEY/${IMGUR_API_KEY}/" \
 	| sed "s/WEBSITE_PASSWORD/${WEBSITE_PASSWORD}/" \
     > ./mods/deathmatch/settings.xml
+
+# Poczekaj na gotowość bazy danych (jeśli host to nie localhost/socket)
+if [ -n "${MTA_DATABASE_HOST}" ] && [ "${MTA_DATABASE_HOST}" != "localhost" ] && [ "${MTA_DATABASE_HOST}" != "127.0.0.1" ]; then
+    echo "[db] Waiting for MySQL at ${MTA_DATABASE_HOST}:${MTA_DATABASE_PORT:-3306}..."
+    until nc -z "${MTA_DATABASE_HOST}" "${MTA_DATABASE_PORT:-3306}" 2>/dev/null; do
+        sleep 2
+    done
+    echo "[db] MySQL is ready."
+fi
 
 # Move our modules to the right paths
 if [ ! -d "./x64/modules" ]; then

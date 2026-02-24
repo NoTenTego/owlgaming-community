@@ -46,6 +46,7 @@
 		<export function="getOpenQueryStr"  type="server" http="false" />
 
 		<!-- custom mysql functions -->
+		<export function="mysql_null"  type="server" http="false" />
 		<export function="select" />
 		<export function="select_one" />
 		<export function="insert"  type="server" http="false" />

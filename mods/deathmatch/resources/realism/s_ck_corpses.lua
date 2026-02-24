@@ -67,7 +67,7 @@ function loadAllCorpses(res)
 			local rotation = tonumber(row["rotation"])
 			local id = tonumber(row["id"])
 			local name = row["charactername"]
-			if name == mysql_null() then
+			if name == exports["mysql"]:mysql_null() then
 				name = ""
 			end
 			local interior = tonumber(row["interior_id"])
@@ -79,10 +79,10 @@ function loadAllCorpses(res)
 			local height = tonumber(row["height"])
 			local cod = row["ck_info"]
 			local desc = row["description"]
-			if desc == mysql_null() then
+			if desc == exports["mysql"]:mysql_null() then
 				desc = "unknown"
 			end
-			if cod == mysql_null() then
+			if cod == exports["mysql"]:mysql_null() then
 				cod = "unknown"
 			end
 			local gender = tonumber(row["gender"])
@@ -147,7 +147,7 @@ local function showCKList( thePlayer, data )
 				break
 			end
 			local name = row["charactername"]
-			if name ~= mysql_null() then
+			if name ~= exports["mysql"]:mysql_null() then
 				names[ #names + 1 ] = name
 			end
 		end

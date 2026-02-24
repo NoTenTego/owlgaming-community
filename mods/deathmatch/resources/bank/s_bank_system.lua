@@ -284,14 +284,14 @@ function tellTransfers(source, dbid, event)
 			local time = row["newtime"]
 			local type = tonumber(row["type"])
 			local reason = row["reason"]
-			if reason == mysql_null() then
+			if reason == exports["mysql"]:mysql_null() then
 				reason = ""
 			end
 			
 			local from, to = "-", "-"
-			if row["characterfrom"] ~= mysql_null() then
+			if row["characterfrom"] ~= exports["mysql"]:mysql_null() then
 				from = row["characterfrom"]:gsub("_", " ")
-				if row["from_card"] ~= mysql_null() then
+				if row["from_card"] ~= exports["mysql"]:mysql_null() then
 					from = from.." ("..row["from_card"]..")"
 				end
 			elseif tonumber(row["from"]) then
@@ -303,9 +303,9 @@ function tellTransfers(source, dbid, event)
 					from = "Government"
 				end
 			end
-			if row["characterto"] ~= mysql_null() then
+			if row["characterto"] ~= exports["mysql"]:mysql_null() then
 				to = row["characterto"]:gsub("_", " ")
-				if row["to_card"] ~= mysql_null() then
+				if row["to_card"] ~= exports["mysql"]:mysql_null() then
 					to = to.." ("..row["to_card"]..")"
 				end
 			elseif tonumber(row["to"]) and tonumber(row["to"]) < 0 then
@@ -336,7 +336,7 @@ function tellTransfers(source, dbid, event)
 				amount = "$" .. amount
 			end]]
 			local details = "-"
-			if row["details"] ~= mysql_null() then
+			if row["details"] ~= exports["mysql"]:mysql_null() then
 				details = row["details"]
 			end
 			triggerClientEvent(source, event, source, id, amount, time, type, from, to, reason, details, dbid)
